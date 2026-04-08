@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-inherit="mail.Composer" t-inherit-mode="extension">
+        <xpath expr="//img[hasclass('o-mail-Composer-avatar')]" position="replace">
+            <img t-if="employee_avatar" class="o-mail-Composer-avatar mx-auto o_avatar rounded-3"
+                 t-att-src="employee_avatar" alt="Avatar of user"/>
+            <img t-else="" class="o-mail-Composer-avatar mx-auto o_avatar rounded-3" t-att-src="(thread?.effectiveSelf or message.effectiveSelf).avatarUrl" alt="Avatar of user"/>
+        </xpath>
+    </t>
+</templates>
