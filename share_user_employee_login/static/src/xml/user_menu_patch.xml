@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">  
+    <t t-nam="share_user_employee_login.UserMenu" t-inherit="web.UserMenu" t-inherit-mode="extension">
+        <xpath expr="//t[@t-esc='userName']" position="replace">
+            <t t-if="employee_name" t-esc="employee_name"/>
+            <t t-else="" t-esc="userName"/>
+        </xpath>
+
+        <xpath expr="//img[hasclass('o_user_avatar')]" position="replace">
+            <img t-if="employee_avatar" class="o_avatar o_user_avatar rounded" t-att-title="employee_name" t-att-src="employee_avatar" alt="Employee"/>
+            <img t-else="" class="o_avatar o_user_avatar rounded" t-att-src="source" alt="User"/>
+        </xpath>
+    </t>
+</templates>
