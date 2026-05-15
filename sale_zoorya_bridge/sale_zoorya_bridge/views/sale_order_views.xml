@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ══════════════════════════════════════════════════════════════════════
+         SALE ORDER FORM — header buttons + POS sync tab
+    ═══════════════════════════════════════════════════════════════════════ -->
+    <record id="view_order_form_zoorya_bridge" model="ir.ui.view">
+        <field name="name">sale.order.form.zoorya.bridge</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+
+            <!-- ── 1. Smart button in stat box ─────────────────────────── -->
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button
+                    class="oe_stat_button"
+                    icon="fa-cash-register"
+                    type="object"
+                    name="action_check_pos_payment"
+                    invisible="zoorya_sync_state not in ('sent', 'paid', 'cancelled')"
+                    help="Click to refresh payment status from Odoo 17 POS">
+                    <div class="o_stat_info">
+                        <field
+                            name="zoorya_sync_state"
+                            widget="badge"
+                            decoration-success="zoorya_sync_state == 'paid'"
+                            decoration-info="zoorya_sync_state == 'sent'"
+                            decoration-danger="zoorya_sync_state == 'failed'"
+                            decoration-warning="zoorya_sync_state == 'cancelled'"/>
+                        <span class="o_stat_text">POS</span>
+                    </div>
+                </button>
+            </xpath>
+
+            <!-- ── 2. Header action buttons — placed right after Confirm ── -->
+            <xpath expr="//button[@id='action_confirm']" position="after">
+                <button
+                    name="action_send_to_pos"
+                    type="object"
+                    string="Send to POS"
+                    class="btn-primary"
+                    invisible="zoorya_sync_state not in ('draft', 'failed')"/>
+                <button
+                    name="action_reset_zoorya_sync"
+                    type="object"
+                    string="Reset Sync"
+                    class="btn-secondary"
+                    invisible="zoorya_sync_state != 'failed'"/>
+                <button
+                    name="action_check_pos_payment"
+                    type="object"
+                    string="Refresh POS Status"
+                    class="btn-secondary"
+                    invisible="zoorya_sync_state not in ('sent', 'cancelled')"/>
+            </xpath>
+
+            <!-- ── 3. POS Sync tab in the notebook ──────────────────────── -->
+            <xpath expr="//page[@name='other_information']" position="after">
+                <page string="POS Sync" name="zoorya_sync">
+                    <group>
+                        <group string="Sync Status">
+                            <field name="zoorya_sync_state"
+                                   widget="badge"
+                                   decoration-success="zoorya_sync_state == 'paid'"
+                                   decoration-info="zoorya_sync_state == 'sent'"
+                                   decoration-danger="zoorya_sync_state == 'failed'"
+                                   decoration-warning="zoorya_sync_state == 'cancelled'"/>
+                            <field name="zoorya_synced_at"
+                                   invisible="not zoorya_synced_at"/>
+                            <field name="zoorya_sync_error"
+                                   invisible="not zoorya_sync_error"
+                                   widget="text"/>
+                        </group>
+                        <group string="POS Order Details"
+                               invisible="zoorya_sync_state == 'draft'">
+                            <field name="zoorya_order_id"
+                                   invisible="not zoorya_order_id"/>
+                            <field name="zoorya_pos_reference"
+                                   invisible="not zoorya_pos_reference"/>
+                            <field name="zoorya_pos_state"
+                                   invisible="not zoorya_pos_state"/>
+                            <field name="zoorya_amount_paid"
+                                   invisible="zoorya_amount_paid == 0"
+                                   widget="monetary"
+                                   options="{'currency_field': 'currency_id'}"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+
+        </field>
+    </record>
+
+    <!-- ══════════════════════════════════════════════════════════════════════
+         SALE ORDER LIST VIEW — add sync state column
+    ═══════════════════════════════════════════════════════════════════════ -->
+    <record id="view_order_tree_zoorya_bridge" model="ir.ui.view">
+        <field name="name">sale.order.tree.zoorya.bridge</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='amount_total']" position="after">
+                <field
+                    name="zoorya_sync_state"
+                    optional="show"
+                    widget="badge"
+                    decoration-success="zoorya_sync_state == 'paid'"
+                    decoration-info="zoorya_sync_state == 'sent'"
+                    decoration-danger="zoorya_sync_state == 'failed'"
+                    decoration-warning="zoorya_sync_state == 'cancelled'"
+                    decoration-muted="zoorya_sync_state == 'draft'"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- ══════════════════════════════════════════════════════════════════════
+         QUOTATION LIST VIEW — same sync column as confirmed orders
+    ═══════════════════════════════════════════════════════════════════════ -->
+    <record id="view_quotation_tree_zoorya_bridge" model="ir.ui.view">
+        <field name="name">sale.order.quotation.tree.zoorya.bridge</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_quotation_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='amount_total']" position="after">
+                <field
+                    name="zoorya_sync_state"
+                    optional="show"
+                    widget="badge"
+                    decoration-success="zoorya_sync_state == 'paid'"
+                    decoration-info="zoorya_sync_state == 'sent'"
+                    decoration-danger="zoorya_sync_state == 'failed'"
+                    decoration-warning="zoorya_sync_state == 'cancelled'"
+                    decoration-muted="zoorya_sync_state == 'draft'"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- ══════════════════════════════════════════════════════════════════════
+         SEARCH VIEW — quick filters for POS sync states
+    ═══════════════════════════════════════════════════════════════════════ -->
+    <record id="view_sales_order_filter_zoorya_bridge" model="ir.ui.view">
+        <field name="name">sale.order.search.zoorya.bridge</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_sales_order_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='my_sale_orders_filter']" position="after">
+                <separator/>
+                <filter string="Not Sent to POS" name="zoorya_not_sent"
+                        domain="[('zoorya_sync_state', '=', 'draft')]"/>
+                <filter string="Sent to POS" name="zoorya_sent"
+                        domain="[('zoorya_sync_state', '=', 'sent')]"/>
+                <filter string="Paid in POS" name="zoorya_paid"
+                        domain="[('zoorya_sync_state', '=', 'paid')]"/>
+                <filter string="POS Sync Failed" name="zoorya_failed"
+                        domain="[('zoorya_sync_state', '=', 'failed')]"/>
+            </xpath>
+            <xpath expr="//group" position="inside">
+                <filter string="POS Sync Status" name="group_zoorya_sync_state"
+                        context="{'group_by': 'zoorya_sync_state'}"/>
+            </xpath>
+        </field>
+    </record>
+
+
+</odoo>

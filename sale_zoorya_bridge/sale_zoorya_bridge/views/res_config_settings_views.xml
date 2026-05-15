@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form_zoorya" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.zoorya.bridge</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="sale.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//block[@id='connectors_setting_container']" position="after">
+                <block title="Zoorya Bridge — zoorya POS" id="zoorya_bridge_setting_container">
+
+                    <!-- Connection -->
+                    <setting string="Zoorya URL"
+                             help="Base URL of your zoorya instance running pos_ecommerce_sync (e.g. https://pos.yourdomain.com)">
+                        <field name="zoorya_odoo17_url" placeholder="https://pos.yourdomain.com"/>
+                    </setting>
+
+                    <setting string="API Key"
+                             help="Secret API key configured in pos_ecommerce_sync on the Zoorya side">
+                        <field name="zoorya_api_key" placeholder="your-secret-api-key" password="True"/>
+                    </setting>
+
+                    <!-- Routing -->
+                    <setting string="Store ID"
+                             help="Which store/branch receives the orders. Leave blank to use this company's name.">
+                        <field name="zoorya_store_id" placeholder="Leave blank to use company name"/>
+                    </setting>
+
+                    <setting string="Machine ID"
+                             help="Target POS machine within the store (optional, e.g. POS-01)">
+                        <field name="zoorya_machine_id" placeholder="e.g. POS-01 (optional)"/>
+                    </setting>
+
+                    <!-- Behaviour -->
+                    <setting string="Auto-send to POS on Confirmation"
+                             help="Automatically push the order to Odoo 17 POS when a quotation is confirmed. If disabled, use the 'Send to POS' button manually.">
+                        <field name="zoorya_auto_send_on_confirm"/>
+                    </setting>
+
+                    <setting string="Test Connection"
+                             help="Verify that this Odoo 18 instance can reach the Odoo 17 Zoorya endpoints with the configured API key.">
+                        <button
+                            name="action_test_zoorya_connection"
+                            type="object"
+                            string="Test Connection"
+                            class="btn-secondary"
+                            icon="fa-plug"/>
+                    </setting>
+
+                </block>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!--
+            Polls Odoo 17 every 30 minutes for payment status of orders
+            that were sent to POS but are not yet marked as paid or cancelled.
+        -->
+        <record id="ir_cron_check_pos_payments" model="ir.cron">
+            <field name="name">Zoorya Bridge: Refresh POS Payment Status</field>
+            <field name="model_id" ref="sale.model_sale_order"/>
+            <field name="state">code</field>
+            <field name="code">model.cron_check_pos_payments()</field>
+            <field name="interval_number">30</field>
+            <field name="interval_type">minutes</field>
+            <field name="active" eval="True"/>
+            <field name="user_id" ref="base.user_admin"/>
+        </record>
+    </data>
+</odoo>
