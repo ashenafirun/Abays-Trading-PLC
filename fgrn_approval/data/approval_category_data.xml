@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!--
+            FGRN Approval category.
+            After installing, go to:
+              Approvals ▸ Configuration ▸ Approval Types ▸ FGRN Approval
+            and add the 4 approver users:
+              Store Manager, Quality Manager, Warehouse Manager, Operations Manager
+        -->
+        <record id="fgrn_approval_category" model="approval.category">
+            <field name="name">FGRN Approval</field>
+            <field name="requirer_document">none</field>
+        </record>
+    </data>
+</odoo>
