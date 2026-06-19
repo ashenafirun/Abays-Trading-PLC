@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_picking_form_fgrn_approval" model="ir.ui.view">
+        <field name="name">stock.picking.form.fgrn.approval</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+
+            <!-- ① Smart button — shows approval count (e.g. 2/4) -->
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_view_fgrn_approval"
+                        type="object"
+                        class="oe_stat_button"
+                        icon="fa-check-circle"
+                        invisible="not is_fgrn_type or not fgrn_approval_id">
+                    <div class="o_field_widget o_stat_info">
+                        <span class="o_stat_value">
+                            <field name="fgrn_approved_count"/>
+                            <span> / 4</span>
+                        </span>
+                        <span class="o_stat_text">Approvals</span>
+                    </div>
+                </button>
+            </xpath>
+
+            <!-- ② "Request FGRN Approval" button — visible before request is created -->
+            <xpath expr="//button[@name='button_validate']" position="before">
+                <button name="action_request_fgrn_approval"
+                        string="Request FGRN Approval"
+                        type="object"
+                        class="btn-warning"
+                        invisible="not is_fgrn_type or fgrn_approval_id"/>
+            </xpath>
+
+            <!-- ③ Hide Validate button until all 4 approvals are done -->
+            <xpath expr="//button[@name='button_validate']" position="attributes">
+                <attribute name="invisible">is_fgrn_type and not fgrn_is_approved</attribute>
+            </xpath>
+
+        </field>
+    </record>
+</odoo>

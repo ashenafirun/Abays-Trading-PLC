@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--
+        Extends the standard Delivery Slip / Transfer report to append an
+        "FGRN Approval Sign-Off" table at the bottom for FGRN transfers.
+        Shows: Role | Approved By | Date | Signature line
+    -->
+    <template id="report_fgrn_approval_signoff"
+              inherit_id="stock.report_picking_document">
+
+        <xpath expr="//div[hasclass('page')]" position="inside">
+            <t t-if="o.is_fgrn_type and o.fgrn_approval_id">
+
+                <div style="margin-top: 48px; page-break-inside: avoid;">
+
+                    <h4 style="
+                        font-size: 13px;
+                        font-weight: bold;
+                        border-bottom: 2px solid #222;
+                        padding-bottom: 4px;
+                        margin-bottom: 12px;
+                        text-transform: uppercase;
+                        letter-spacing: 0.5px;
+                    ">
+                        FGRN Approval Sign-Off
+                    </h4>
+
+                    <table style="
+                        width: 100%;
+                        border-collapse: collapse;
+                        font-size: 11px;
+                    ">
+                        <thead>
+                            <tr style="background-color: #f0f0f0;">
+                                <th style="border: 1px solid #bbb; padding: 7px 10px; text-align: left; width: 22%;">
+                                    Role
+                                </th>
+                                <th style="border: 1px solid #bbb; padding: 7px 10px; text-align: left; width: 28%;">
+                                    Approved By
+                                </th>
+                                <th style="border: 1px solid #bbb; padding: 7px 10px; text-align: left; width: 18%;">
+                                    Date
+                                </th>
+                                <th style="border: 1px solid #bbb; padding: 7px 10px; text-align: left; width: 32%;">
+                                    Signature
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="o.fgrn_approval_id.approver_ids" t-as="approver">
+                                <tr>
+                                    <!-- Role (uses job title if set, otherwise name) -->
+                                    <td style="border: 1px solid #bbb; padding: 7px 10px; vertical-align: middle;">
+                                        <t t-esc="approver.user_id.job_title or approver.user_id.name"/>
+                                    </td>
+
+                                    <!-- Approved By name -->
+                                    <td style="border: 1px solid #bbb; padding: 7px 10px; vertical-align: middle;">
+                                        <t t-if="approver.status == 'approved'">
+                                            <strong><t t-esc="approver.user_id.name"/></strong>
+                                        </t>
+                                        <t t-else="">
+                                            <span style="color: #aaa; font-style: italic;">Pending</span>
+                                        </t>
+                                    </td>
+
+                                    <!-- Approval date -->
+                                    <td style="border: 1px solid #bbb; padding: 7px 10px; vertical-align: middle;">
+                                        <t t-if="approver.status == 'approved'">
+                                            <t t-set="adate" t-value="approver.approve_date or approver.write_date"/>
+                                            <t t-if="adate">
+                                                <t t-esc="adate.strftime('%d/%m/%Y')"/>
+                                            </t>
+                                        </t>
+                                    </td>
+
+                                    <!-- Signature box -->
+                                    <td style="border: 1px solid #bbb; padding: 7px 10px; height: 56px; vertical-align: bottom;">
+                                        <div style="
+                                            border-bottom: 1px solid #555;
+                                            margin: 0 8px 4px 8px;
+                                        "/>
+                                    </td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+
+                    <!-- Footer note -->
+                    <p style="font-size: 9px; color: #888; margin-top: 6px;">
+                        This document requires sign-off from all 4 approvers before the FGRN transfer is valid.
+                        Approval request: <t t-esc="o.fgrn_approval_id.name"/>
+                    </p>
+
+                </div>
+
+            </t>
+        </xpath>
+
+    </template>
+</odoo>
