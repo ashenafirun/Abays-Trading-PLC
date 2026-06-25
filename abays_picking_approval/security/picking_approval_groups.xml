@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- These groups appear under Inventory section in Settings > Users -->
+        <record id="group_grn_inspector" model="res.groups">
+            <field name="name">GRN Inspector</field>
+            <field name="category_id" ref="stock.module_category_inventory_configuration"/>
+            <field name="comment">Can click the Inspect button on GRN transfers</field>
+        </record>
+
+        <record id="group_grn_receiver" model="res.groups">
+            <field name="name">GRN Receiver</field>
+            <field name="category_id" ref="stock.module_category_inventory_configuration"/>
+            <field name="comment">Can click the Receive button on GRN transfers</field>
+        </record>
+
+        <record id="group_grn_auditor" model="res.groups">
+            <field name="name">GRN Auditor</field>
+            <field name="category_id" ref="stock.module_category_inventory_configuration"/>
+            <field name="comment">Can click the Audit button on GRN transfers</field>
+        </record>
+
+        <record id="group_grn_approver" model="res.groups">
+            <field name="name">GRN Approver</field>
+            <field name="category_id" ref="stock.module_category_inventory_configuration"/>
+            <field name="comment">Can click the final Approve button on GRN transfers</field>
+        </record>
+    </data>
+</odoo>
