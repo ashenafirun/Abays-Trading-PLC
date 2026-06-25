@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_picking_grn_approval_inherit" model="ir.ui.view">
+            <field name="name">stock.picking.grn.approval.inherit</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">
+
+                <!-- Approval buttons BEFORE validate -->
+                <xpath expr="//button[@name='button_validate'][1]" position="before">
+                    <button name="action_grn_inspect"
+                            string="Inspect"
+                            type="object"
+                            class="btn-primary"
+                            icon="fa-search"
+                            invisible="picking_type_code != 'incoming' or x_grn_approval_stage != 'draft' or state in ('done','cancel')"/>
+                    <button name="action_grn_receive"
+                            string="Receive"
+                            type="object"
+                            class="btn-primary"
+                            icon="fa-inbox"
+                            invisible="picking_type_code != 'incoming' or x_grn_approval_stage != 'inspected' or state in ('done','cancel')"/>
+                    <button name="action_grn_audit"
+                            string="Audit"
+                            type="object"
+                            class="btn-primary"
+                            icon="fa-file-text"
+                            invisible="picking_type_code != 'incoming' or x_grn_approval_stage != 'received' or state in ('done','cancel')"/>
+                    <button name="action_grn_approve"
+                            string="Approve"
+                            type="object"
+                            class="btn-success"
+                            icon="fa-check-circle"
+                            invisible="picking_type_code != 'incoming' or x_grn_approval_stage != 'audited' or state in ('done','cancel')"/>
+                </xpath>
+
+                <!-- Hide validate until approved for GRN -->
+                <xpath expr="//button[@name='button_validate'][1]" position="attributes">
+                    <attribute name="invisible">
+                        state in ('done','cancel','draft','confirmed') or (picking_type_code == 'incoming' and x_grn_approval_stage != 'approved')
+                    </attribute>
+                </xpath>
+                <xpath expr="//button[@name='button_validate'][2]" position="attributes">
+                    <attribute name="invisible">
+                        state in ('done','cancel','assigned') or (picking_type_code == 'incoming' and x_grn_approval_stage != 'approved')
+                    </attribute>
+                </xpath>
+
+                <!-- Approval status banner -->
+                <xpath expr="//field[@name='state'][@widget='statusbar'][1]" position="after">
+                    <div invisible="picking_type_code != 'incoming'"
+                         class="d-flex align-items-center gap-2 px-3 py-2 bg-light border-bottom">
+                        <span class="fw-bold text-muted small me-2">GRN Approval:</span>
+
+                        <span invisible="not x_inspected_name" class="badge text-bg-success">
+                            <i class="fa fa-check me-1"/>Inspected: <field name="x_inspected_name" readonly="1" nolabel="1"/>
+                        </span>
+                        <span invisible="x_inspected_name" class="badge text-bg-secondary">Pending Inspection</span>
+
+                        <i class="fa fa-chevron-right text-muted"/>
+
+                        <span invisible="not x_received_name" class="badge text-bg-success">
+                            <i class="fa fa-check me-1"/>Received: <field name="x_received_name" readonly="1" nolabel="1"/>
+                        </span>
+                        <span invisible="x_received_name" class="badge text-bg-secondary">Pending Receive</span>
+
+                        <i class="fa fa-chevron-right text-muted"/>
+
+                        <span invisible="not x_audited_name" class="badge text-bg-success">
+                            <i class="fa fa-check me-1"/>Audited: <field name="x_audited_name" readonly="1" nolabel="1"/>
+                        </span>
+                        <span invisible="x_audited_name" class="badge text-bg-secondary">Pending Audit</span>
+
+                        <i class="fa fa-chevron-right text-muted"/>
+
+                        <span invisible="not x_approved_name" class="badge text-bg-success">
+                            <i class="fa fa-check me-1"/>Approved: <field name="x_approved_name" readonly="1" nolabel="1"/>
+                        </span>
+                        <span invisible="x_approved_name" class="badge text-bg-secondary">Pending Approval</span>
+                    </div>
+                </xpath>
+
+                <!-- Approval Details tab -->
+                <xpath expr="//notebook" position="inside">
+                    <page string="Approval Details" invisible="picking_type_code != 'incoming'">
+                        <group>
+                            <group string="Step 1 - Inspection">
+                                <field name="x_inspected_name" readonly="1"/>
+                                <field name="x_inspected_date" readonly="1"/>
+                            </group>
+                            <group string="Step 2 - Receive">
+                                <field name="x_received_name" readonly="1"/>
+                                <field name="x_received_date" readonly="1"/>
+                            </group>
+                        </group>
+                        <group>
+                            <group string="Step 3 - Audit">
+                                <field name="x_audited_name" readonly="1"/>
+                                <field name="x_audited_date" readonly="1"/>
+                            </group>
+                            <group string="Step 4 - Final Approval">
+                                <field name="x_approved_name" readonly="1"/>
+                                <field name="x_approved_date" readonly="1"/>
+                            </group>
+                        </group>
+                    </page>
+                </xpath>
+
+            </field>
+        </record>
+    </data>
+</odoo>
