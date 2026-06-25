@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="picking_approval_wizard_view_form" model="ir.ui.view">
+            <field name="name">picking.approval.wizard.form</field>
+            <field name="model">picking.approval.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Approval Confirmation">
+                    <sheet>
+                        <group>
+                            <field name="picking_id" invisible="1"/>
+                            <field name="approval_action" invisible="1"/>
+                            <div class="alert alert-info mb-3" role="alert">
+                                <i class="fa fa-info-circle me-2"/>
+                                Enter your <strong>full employee name</strong> and draw your <strong>signature</strong> below.
+                            </div>
+                            <field name="employee_name" placeholder="e.g. Alemnesh Tadesse"/>
+                            <field name="signature" widget="signature" string="Draw Signature"/>
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button name="action_confirm" string="Confirm" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+    </data>
+</odoo>
