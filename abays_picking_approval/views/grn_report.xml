@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="report_grn_custom" model="ir.ui.view">
+            <field name="name">stock.report_delivery_document_copy_1</field>
+            <field name="key">stock.report_delivery_document_copy_1</field>
+            <field name="type">qweb</field>
+            <field name="arch" type="xml">
+<t t-name="stock.report_delivery_document_copy_1">
+  <t t-call="web.html_container">
+    <t t-foreach="docs" t-as="o">
+      <div class="page" style="font-family: Arial, sans-serif; font-size: 11px; padding: 10px;">
+
+        <table style="width:100%; border-collapse:collapse; border:1.5px solid black;" cellpadding="4">
+          <tr>
+            <td rowspan="3" style="width:120px; border-right:1.5px solid black; text-align:center; vertical-align:middle;">
+              <t t-if="o.company_id.logo">
+                <img t-att-src="image_data_uri(o.company_id.logo)" style="max-height:70px; max-width:100px;"/>
+              </t>
+            </td>
+            <td style="text-align:center; border-bottom:1px solid black; border-right:1.5px solid black;">
+              <img src="data:image/png;base64,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" style="height:22px;" alt="amharic"/>
+            </td>
+            <td style="border-bottom:1px solid black; border-right:1px solid black; padding:3px 6px;">Doc. No.<br/><strong>OF/CD/048</strong></td>
+            <td style="border-bottom:1px solid black; padding:3px 6px;">Issue Date<br/><strong>July 2023</strong></td>
+          </tr>
+          <tr>
+            <td style="text-align:center; font-size:12px; font-weight:bold; border-bottom:1px solid black; border-right:1.5px solid black;">Company Name:- ABAYS TRADING PLC</td>
+            <td style="border-bottom:1px solid black; border-right:1px solid black; padding:3px 6px;">Issue No. 1</td>
+            <td style="border-bottom:1px solid black; padding:3px 6px;">Page 1 of 1</td>
+          </tr>
+          <tr>
+            <td style="text-align:center; border-right:1.5px solid black; padding:3px;">Title:-   <strong>Goods Receiving Note</strong></td>
+            <td colspan="2"/>
+          </tr>
+        </table>
+
+        <table style="width:100%; margin-top:8px;" cellpadding="3">
+          <tr>
+            <td style="width:50%;">Date: <u><t t-esc="o.scheduled_date and o.scheduled_date.strftime('%d-%m-%Y') or ''"/></u></td>
+            <td style="text-align:right;">No.   <strong><span t-field="o.name"/></strong></td>
+          </tr>
+        </table>
+
+        <table style="width:100%; margin-top:6px; border-collapse:collapse;" cellpadding="3">
+          <tr>
+            <td style="width:40%;">Name of Supplier :- <u><span t-field="o.partner_id.name"/></u></td>
+            <td style="width:30%;">Store Req. No <u>
+              <t t-if="o.x_store_req_no"><t t-esc="o.x_store_req_no"/></t>
+            </u></td>
+            <td style="width:30%;">Purchase Req. No. <u>
+              <t t-if="o.x_purchase_req_no"><t t-esc="o.x_purchase_req_no"/></t>
+            </u></td>
+          </tr>
+          <tr>
+            <td>Supplier Invoice No.:- <u>                   </u></td>
+            <td>Supplier Address:- <u>                   </u></td>
+            <td>Purchase Type:- Foreign <u>    </u> Local <u>    </u></td>
+          </tr>
+        </table>
+
+        <table style="width:100%; margin-top:8px; border-collapse:collapse; border:1.5px solid black;" cellpadding="4">
+          <thead>
+            <tr style="background-color:#f0f0f0; font-weight:bold; text-align:center;">
+              <th style="border:1px solid black; width:5%;">S.No.</th>
+              <th style="border:1px solid black; width:12%;">Item Code</th>
+              <th style="border:1px solid black; width:30%;">Item Description</th>
+              <th style="border:1px solid black; width:8%;">UOM</th>
+              <th style="border:1px solid black; width:10%;">Qty.</th>
+              <th style="border:1px solid black; width:12%;">Unit Price</th>
+              <th style="border:1px solid black; width:12%;">Total Price</th>
+              <th style="border:1px solid black; width:11%;">Remark</th>
+            </tr>
+          </thead>
+          <tbody>
+            <t t-set="line_num" t-value="0"/>
+            <t t-foreach="o.move_ids.filtered(lambda m: m.product_uom_qty)" t-as="move">
+              <t t-set="line_num" t-value="line_num + 1"/>
+              <tr>
+                <td style="border:1px solid black; text-align:center;"><t t-esc="line_num"/></td>
+                <td style="border:1px solid black; text-align:center;"><span t-field="move.product_id.default_code"/></td>
+                <td style="border:1px solid black;"><span t-field="move.product_id.display_name"/></td>
+                <td style="border:1px solid black; text-align:center;"><span t-field="move.product_uom"/></td>
+                <td style="border:1px solid black; text-align:center;"><span t-field="move.quantity"/></td>
+                <td style="border:1px solid black;"/>
+                <td style="border:1px solid black;"/>
+                <td style="border:1px solid black;"/>
+              </tr>
+            </t>
+            <t t-set="filled" t-value="len(o.move_ids.filtered(lambda m: m.product_uom_qty))"/>
+            <t t-foreach="range(max(0, 8 - filled))" t-as="empty">
+              <tr style="height:24px;">
+                <td style="border:1px solid black;"/>
+                <td style="border:1px solid black;"/>
+                <td style="border:1px solid black;"/>
+                <td style="border:1px solid black;"/>
+                <td style="border:1px solid black;"/>
+                <td style="border:1px solid black;"/>
+                <td style="border:1px solid black;"/>
+                <td style="border:1px solid black;"/>
+              </tr>
+            </t>
+            <tr style="font-weight:bold;">
+              <td colspan="6" style="border:1px solid black; text-align:center;">Total</td>
+              <td style="border:1px solid black;"/>
+              <td style="border:1px solid black;"/>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- SIGNATURE SECTION: exactly like the real GRN photo
+             - Label top: "Inspected by"
+             - Then: Name:- [name on dotted line]
+             - Then: Signature:- [image sits ON the dotted line, transparent]
+             - Then: Date:- [scheduled_date on dotted line]
+             All inline with dotted underlines, no boxes -->
+        <t t-set="sig_date" t-value="o.scheduled_date and o.scheduled_date.strftime('%d-%m-%Y') or ''"/>
+
+        <table style="width:100%; margin-top:14px; border-collapse:collapse;" cellpadding="0">
+          <tr style="vertical-align:top;">
+
+            <!-- INSPECTED BY -->
+            <td style="width:25%; padding:0 4px 0 0;">
+              <div style="font-weight:bold; margin-bottom:5px; text-align:center;">Inspected by</div>
+              <!-- Name row -->
+              <div style="white-space:nowrap; overflow:hidden;">
+                Name:- <span style="display:inline-block; border-bottom:1px solid black; min-width:100px; vertical-align:bottom; font-size:10px; padding-bottom:1px;">
+                  <t t-if="o.x_inspected_name"><t t-esc="o.x_inspected_name"/></t>
+                </span>
+              </div>
+              <!-- Signature row: image sits ON the dotted line -->
+              <div style="white-space:nowrap; overflow:hidden; margin-top:3px;">
+                Signature:- <span style="display:inline-block; border-bottom:1px solid black; min-width:90px; min-height:35px; vertical-align:bottom; padding-bottom:0px;">
+                  <t t-if="o.x_inspected_signature">
+                    <img t-att-src="image_data_uri(o.x_inspected_signature)"
+                         style="height:33px; max-width:88px; display:block; mix-blend-mode:multiply; vertical-align:bottom;"/>
+                  </t>
+                </span>
+              </div>
+              <!-- Date row -->
+              <div style="white-space:nowrap; overflow:hidden; margin-top:3px;">
+                Date:- <span style="display:inline-block; border-bottom:1px solid black; min-width:100px; vertical-align:bottom; font-size:10px; padding-bottom:1px;">
+                  <t t-esc="sig_date"/>
+                </span>
+              </div>
+            </td>
+
+            <!-- RECEIVED BY -->
+            <td style="width:25%; padding:0 4px;">
+              <div style="font-weight:bold; margin-bottom:5px; text-align:center;">Received by</div>
+              <div style="white-space:nowrap; overflow:hidden;">
+                Name:- <span style="display:inline-block; border-bottom:1px solid black; min-width:100px; vertical-align:bottom; font-size:10px; padding-bottom:1px;">
+                  <t t-if="o.x_received_name"><t t-esc="o.x_received_name"/></t>
+                </span>
+              </div>
+              <div style="white-space:nowrap; overflow:hidden; margin-top:3px;">
+                Signature:- <span style="display:inline-block; border-bottom:1px solid black; min-width:90px; min-height:35px; vertical-align:bottom; padding-bottom:0px;">
+                  <t t-if="o.x_received_signature">
+                    <img t-att-src="image_data_uri(o.x_received_signature)"
+                         style="height:33px; max-width:88px; display:block; mix-blend-mode:multiply; vertical-align:bottom;"/>
+                  </t>
+                </span>
+              </div>
+              <div style="white-space:nowrap; overflow:hidden; margin-top:3px;">
+                Date:- <span style="display:inline-block; border-bottom:1px solid black; min-width:100px; vertical-align:bottom; font-size:10px; padding-bottom:1px;">
+                  <t t-esc="sig_date"/>
+                </span>
+              </div>
+            </td>
+
+            <!-- AUDIT BY -->
+            <td style="width:25%; padding:0 4px;">
+              <div style="font-weight:bold; margin-bottom:5px; text-align:center;">Audit by</div>
+              <div style="white-space:nowrap; overflow:hidden;">
+                Name:- <span style="display:inline-block; border-bottom:1px solid black; min-width:100px; vertical-align:bottom; font-size:10px; padding-bottom:1px;">
+                  <t t-if="o.x_audited_name"><t t-esc="o.x_audited_name"/></t>
+                </span>
+              </div>
+              <div style="white-space:nowrap; overflow:hidden; margin-top:3px;">
+                Signature:- <span style="display:inline-block; border-bottom:1px solid black; min-width:90px; min-height:35px; vertical-align:bottom; padding-bottom:0px;">
+                  <t t-if="o.x_audited_signature">
+                    <img t-att-src="image_data_uri(o.x_audited_signature)"
+                         style="height:33px; max-width:88px; display:block; mix-blend-mode:multiply; vertical-align:bottom;"/>
+                  </t>
+                </span>
+              </div>
+              <div style="white-space:nowrap; overflow:hidden; margin-top:3px;">
+                Date:- <span style="display:inline-block; border-bottom:1px solid black; min-width:100px; vertical-align:bottom; font-size:10px; padding-bottom:1px;">
+                  <t t-esc="sig_date"/>
+                </span>
+              </div>
+            </td>
+
+            <!-- APPROVED BY -->
+            <td style="width:25%; padding:0 0 0 4px;">
+              <div style="font-weight:bold; margin-bottom:5px; text-align:center;">Approved by</div>
+              <div style="white-space:nowrap; overflow:hidden;">
+                Name:- <span style="display:inline-block; border-bottom:1px solid black; min-width:100px; vertical-align:bottom; font-size:10px; padding-bottom:1px;">
+                  <t t-if="o.x_approved_name"><t t-esc="o.x_approved_name"/></t>
+                </span>
+              </div>
+              <div style="white-space:nowrap; overflow:hidden; margin-top:3px;">
+                Signature:- <span style="display:inline-block; border-bottom:1px solid black; min-width:90px; min-height:35px; vertical-align:bottom; padding-bottom:0px;">
+                  <t t-if="o.x_approved_signature">
+                    <img t-att-src="image_data_uri(o.x_approved_signature)"
+                         style="height:33px; max-width:88px; display:block; mix-blend-mode:multiply; vertical-align:bottom;"/>
+                  </t>
+                </span>
+              </div>
+              <div style="white-space:nowrap; overflow:hidden; margin-top:3px;">
+                Date:- <span style="display:inline-block; border-bottom:1px solid black; min-width:100px; vertical-align:bottom; font-size:10px; padding-bottom:1px;">
+                  <t t-esc="sig_date"/>
+                </span>
+              </div>
+            </td>
+
+          </tr>
+        </table>
+
+        <p style="margin-top:10px; font-size:10px;">
+          Distribution:- Original:- Accountant    1<sup>st</sup> copy:- Cost    2<sup>nd</sup> copy:- Store    3<sup>rd</sup> copy:- pad
+        </p>
+
+        <table style="width:100%; border-top:1.5px solid black; margin-top:4px;" cellpadding="3">
+          <tr style="text-align:center;">
+            <td style="width:33%; border-right:1px solid black;">Prepared by CD</td>
+            <td style="width:33%; border-right:1px solid black;">Reviewed by FSTL</td>
+            <td style="width:33%;">Approved by GM</td>
+          </tr>
+        </table>
+
+      </div>
+    </t>
+  </t>
+</t>
+            </field>
+        </record>
+    </data>
+</odoo>
