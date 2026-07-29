@@ -1,0 +1,15 @@
+<odoo>
+
+    <!-- Server action: prepare wizard context from the current invoice -->
+    <record id="action_open_partial_payment_wizard" model="ir.actions.server">
+        <field name="name">Apply Partial Payment</field>
+        <field name="model_id" ref="account.model_account_move"/>
+        <field name="binding_model_id" ref="account.model_account_move"/>
+        <field name="binding_view_types">form</field>
+        <field name="state">code</field>
+        <field name="code"><![CDATA[
+action = env['partial.payment.wizard'].action_open_from_move(record)
+        ]]></field>
+    </record>
+
+</odoo>
